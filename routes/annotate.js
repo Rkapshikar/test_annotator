@@ -1,27 +1,37 @@
-var url = require( "url" );
-var queryString = require( "querystring" );
+// var url = require( "url" );
+// var queryString = require( "querystring" );
 
 var express = require('express');
 var router = express.Router();
+
+var roomProvider = require('../models/RoomProvider');
+var roomProvider = new RoomProvider();
 
 router.use(function(req, res, next) {
     count();
     next();
 });
 
+var count = function() {
+    roomProvider.count({}, 
+        function(err, numberOfDocs) {
+            length = numberOfDocs;
+        }
+    );
+};
 
-router.route('/annotate')
+router.route('/')
     /* Get all game data */
     .get(function(req, res) {
-        dataProvider.findAll(  
-            function(err, datas) {
+        roomProvider.findAll(  
+            function(err, rooms) {
                 if (err) {
                     res.send(err);
                 }
-                datas.sort(function(obj1, obj2) {
-                    return obj1.game - obj2.game;
+                rooms.annotations.sort(function(obj1, obj2) {
+                    return obj1.timeStampStart - obj2.timeStampStart;
                 });
-                res.json({ "length" : length, "data" : datas });
+                res.json({ "length" : length, "data" : rooms });
             }
         );
     })
@@ -29,22 +39,24 @@ router.route('/annotate')
     /* Add new game data to database */
     .post(function(req, res) {
         updated = true;
-        var data = req.body[0];
+        var room = req.body;
         var newData = 
         {
-            "start" : data.startTime,
-            "end" : data.endTime,
-            "text" : data.textData,
+            "video" : req.body.video,
+            "roomID" : req.body.roomID,
+            "annotation" : req.body.annotation
 
         };
 
-        annotation.create(
+        console.log(newData);
+
+        roomProvider.update(
             newData,
-            function(err, datas) {
+            function(err, rooms) {
                 if (err) {
                     res.send(err);
                 }
-                res.json(datas);
+                res.json(rooms);
             }
         );
 
@@ -53,38 +65,19 @@ router.route('/annotate')
 
     /* Delete game data for specific game type */
     .delete(function(req, res) {
-        dataProvider.delete(req.params.game,
-            function(err, data) {
+        roomProvider.delete(req.params.roomID,
+            function(err, room) {
                 if (err) {
                     res.send(err);
                 }
-                dataProvider.findAll( function(err, datas) {
+                roomProvider.findAll( function(err, rooms) {
                     if (err) {
                         res.send(err);
                     }
-                    res.json(datas);
+                    res.json(rooms);
                 });
             }
         );
     });
 
-
-http.createServer(
-    function (req, res) {
-
-        // parses the request url
-        var theUrl = url.parse( req.url );
-
-        // gets the query part of the URL and parses it creating an object
-        var queryObj = queryString.parse( theUrl.query );
-
-        // queryObj will contain the data of the query as an object
-        // and jsonData will be a property of it
-        // so, using JSON.parse will parse the jsonData to create an object
-        var obj = JSON.parse( queryObj.jsonData );
-
-        // as the object is created, the live below will print "bar"
-        console.log( obj.foo );
-
-    }
-).listen(80);
+module.exports = router;
