@@ -1,0 +1,83 @@
+
+
+* {
+margin: 0;
+    box-sizing: border-box;
+}
+
+
+#canvus 
+{
+	position:fixed;
+	height: 100%;
+	width:100%;
+	font-family: 'Segoe UI';
+    
+
+}
+
+#title
+{
+	position:relative;
+	height: 10%;
+	width:100%;
+	text-align: center;
+    font-size:3.5em;
+}
+
+#challenges-container1
+{
+	height:90%;
+	width:100%;
+	top:10%;
+   background-color: #26ADE4;
+   background: -webkit-gradient(linear, left top, left bottom, from(#26ADE4), to(#4DBCE9));
+   background: -webkit-linear-gradient(top, #26ADE4, #4DBCE9);
+   background: -moz-linear-gradient(top, #26ADE4, #4DBCE9);
+   background: -ms-linear-gradient(top, #26ADE4, #4DBCE9);
+   background: -o-linear-gradient(top, #26ADE4, #4DBCE9);
+	
+}
+
+#button-container
+{
+    position:relative;
+    top:5%;
+    width:65%;
+    height:90%;
+    margin: 0 auto;
+    
+}
+
+
+
+
+.button {
+   background: #d0e751;
+   background: -webkit-gradient(linear, left top, left bottom, from(#d0e751), to(#d0e751));
+   background: -webkit-linear-gradient(top, #d0e751, #d0e751);
+   background: -moz-linear-gradient(top, #d0e751, #d0e751);
+   background: -ms-linear-gradient(top, #d0e751, #d0e751);
+   background: -o-linear-gradient(top, #d0e751, #d0e751);
+   }
+ .button:hover {
+   border-top-color: #ffffff;
+   background: #ffffff;
+   color: #000000;
+   }
+ .button:active {
+   border-top-color: #d0e751;
+   background: #d0e751;
+   }
+
+
+button {
+    width:45%;    
+    height:23%;
+    margin: 1%;
+  -webkit-border-radius: 1em;  
+  -moz-border-radius: 1em;  
+ border-radius: 1em;  
+    font-size:200%;
+
+}

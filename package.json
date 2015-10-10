@@ -1,0 +1,30 @@
+{
+  "name": "svichallenge",
+  "version": "1.0.0",
+  "description": "website to host the intern challenge",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start":"index.html"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AndrewMoll/SVIChallenge.git"
+  },
+  "keywords": [
+    "node.js"
+  ],
+  "author": "Andrew Moll",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AndrewMoll/SVIChallenge/issues"
+  },
+  "homepage": "https://github.com/AndrewMoll/SVIChallenge#readme",
+  "dependencies": {
+    "express": "^4.13.3"
+  },
+  "devDependencies": {
+    "grunt": "^0.4.5"
+  }
+  
+}
