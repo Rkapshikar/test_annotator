@@ -38,7 +38,7 @@ router.route('/annotate')
                 "gameData" : data.gameData
             };
 
-            dataProvider.create(
+            annotation.create(
                 newData,
                 function(err, datas) {
                     if (err) {
