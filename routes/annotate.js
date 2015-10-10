@@ -23,7 +23,7 @@ var count = function() {
 router.route('/')
     /* Get all game data */
     .get(function(req, res) {
-        roomProvider.findAll(  
+        roomProvider.find(req.params.roomID,   
             function(err, rooms) {
                 if (err) {
                     res.send(err);
