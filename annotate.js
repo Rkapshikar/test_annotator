@@ -13,78 +13,57 @@ router.use(function(req, res, next) {
 router.route('/annotate')
     /* Get all game data */
     .get(function(req, res) {
-        dataProvider.findAll(  
-            function(err, datas) {
+        roomProvider.findAll(  
+            function(err, rooms) {
                 if (err) {
                     res.send(err);
                 }
-                datas.sort(function(obj1, obj2) {
-                    return obj1.game - obj2.game;
+                rooms.sort(function(obj1, obj2) {
+                    return obj1.roomID - obj2.roomID;
                 });
-                res.json({ "length" : length, "data" : datas });
+                res.json({ "length" : length, "data" : rooms });
             }
         );
     })
 
-    /* Add new game data to database */
+    /* Add new annotation to database */
     .post(function(req, res) {
         updated = true;
         for (var count = 0; count < req.body.length ; count++) {
-            var data = req.body[count];
-            var newData = 
+            var room = req.body[count];
+            var newRoom = 
             {
-                "id" : data.id,
-                "game" : data.game,
-                "gameData" : data.gameData
+                "video" : data.video,
+                "roomID" : data.roomID,
+                "annotation" : data.annotation
             };
 
-            dataProvider.create(
-                newData,
-                function(err, datas) {
+            roomProvider.update(
+                newRoom,
+                function(err, rooms) {
                     if (err) {
                         res.send(err);
                     }
-                    res.json(datas);
+                    res.json(rooms);
                 }
             );
 
         }
-    })
+    });
 
     /* Delete game data for specific game type */
     .delete(function(req, res) {
-        dataProvider.delete(req.params.game,
-            function(err, data) {
+        roomProvider.delete(req.params.roomID,
+            function(err, room) {
                 if (err) {
                     res.send(err);
                 }
-                dataProvider.findAll( function(err, datas) {
+                roomProvider.findAll( function(err, rooms) {
                     if (err) {
                         res.send(err);
                     }
-                    res.json(datas);
+                    res.json(rooms);
                 });
             }
         );
     });
-
-
-http.createServer(
-    function (req, res) {
-
-        // parses the request url
-        var theUrl = url.parse( req.url );
-
-        // gets the query part of the URL and parses it creating an object
-        var queryObj = queryString.parse( theUrl.query );
-
-        // queryObj will contain the data of the query as an object
-        // and jsonData will be a property of it
-        // so, using JSON.parse will parse the jsonData to create an object
-        var obj = JSON.parse( queryObj.jsonData );
-
-        // as the object is created, the live below will print "bar"
-        console.log( obj.foo );
-
-    }
-).listen(80);
