@@ -11,14 +11,12 @@ var schema = mongoose.Schema;
 var Room = new mongoose.Schema({
 	"video" : String,
 	"roomID" : String,
-	"annotation" : [Annotation]
+	"annotation" : [{
+		"timeStampStart" = Number,
+		"timeStampEnd" = Number,
+		"comment" : String}]
 });
 
-var Annotation = new mongoose.Schema({
-	"timeStampStart" = Number,
-	"timeStampEnd" = Number,
-	"comment" : String
-})
 
 db.model('Room', Room);
 var Room = db.model('Room');
@@ -30,9 +28,9 @@ RoomProvider = function(){};
 RoomProvider.prototype.findAll = function(callback) {
 	Room.find()
 		.sort("roomID")
-		.exec(function(err, datas) {
+		.exec(function(err, rooms) {
 			if (!err) {
-				callback(null, datas);
+				callback(null, rooms);
 			}
 		});
 };
@@ -50,16 +48,16 @@ RoomProvider.prototype.find = function(id, callback) {
 };
 
 /* Update room */
-RoomProvider.prototype.update = function(roomID, annotation, callback) {
-	Room.update({ "roomID" : roomID }, // didn't use save because don't want update by _id
-		{$push: {"annotation": annotation},
-		{ safe: true, upsert : true },
-		function(err, doc) {
-			if (!err) {
-				callback();
-			}
-		}
-	);
+RoomProvider.prototype.update = function(info, callback) {
+
+	Room.findByIdAndUpdate(
+        info._id,
+        {$push: {"annotation": info.annotation}},
+        {safe: true, upsert: true, new : true},
+        function(err, model) {
+            console.log(err);
+        }
+    );
 };
 
 

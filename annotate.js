@@ -4,6 +4,17 @@ var queryString = require( "querystring" );
 var express = require('express');
 var router = express.Router();
 
+
+/* Counts number of game data objects */
+var count = function() {
+    roomProvider.count({}, 
+        function(err, numberOfDocs) {
+            length = numberOfDocs;
+        }
+    );
+};
+
+
 router.use(function(req, res, next) {
     count();
     next();
@@ -13,13 +24,13 @@ router.use(function(req, res, next) {
 router.route('/annotate')
     /* Get all game data */
     .get(function(req, res) {
-        roomProvider.findAll(  
+        roomProvider.find(  req.params.roomID,
             function(err, rooms) {
                 if (err) {
                     res.send(err);
                 }
-                rooms.sort(function(obj1, obj2) {
-                    return obj1.roomID - obj2.roomID;
+                rooms.annotation.sort(function(obj1, obj2)){
+                    return obj1.timeStampStart - obj2.timeStampStart;
                 });
                 res.json({ "length" : length, "data" : rooms });
             }
