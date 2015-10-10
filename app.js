@@ -10,12 +10,10 @@ var http = require('http');
 
 var cors = require('cors');
 
-var login = require('./routes/login');
+var annotate = require('./routes/annotate');
+var search = require('./routes/search');
+
 //all routes below this must be authenticated before using.
-var tokenauth = require('./routes/tokenauth');
-var users = require('./routes/users');
-var settings = require('./routes/settings');
-var data = require('./routes/data');
 
 var app = express();
 
@@ -38,6 +36,7 @@ app.use(express.static(path.join(__dirname, 'views')));
 app.use(cors());
 
 app.use('/annotate', annotate);
+app.use('/search', search);
 
 
 app.get('/', function(req, res) {
