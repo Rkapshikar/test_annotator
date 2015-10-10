@@ -29,26 +29,26 @@ router.route('/annotate')
     /* Add new game data to database */
     .post(function(req, res) {
         updated = true;
-        for (var count = 0; count < req.body.length ; count++) {
-            var data = req.body[count];
-            var newData = 
-            {
-                "id" : data.id,
-                "game" : data.game,
-                "gameData" : data.gameData
-            };
+        var data = req.body[0];
+        var newData = 
+        {
+            "start" : data.startTime,
+            "end" : data.endTime,
+            "text" : data.textData,
 
-            dataProvider.create(
-                newData,
-                function(err, datas) {
-                    if (err) {
-                        res.send(err);
-                    }
-                    res.json(datas);
+        };
+
+        annotation.create(
+            newData,
+            function(err, datas) {
+                if (err) {
+                    res.send(err);
                 }
-            );
+                res.json(datas);
+            }
+        );
 
-        }
+        
     })
 
     /* Delete game data for specific game type */
